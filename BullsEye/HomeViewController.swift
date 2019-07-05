@@ -77,9 +77,12 @@ class HomeViewController: UIViewController {
     
     lazy var infoButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "InfoButton"), for: .normal)
-        button.setBackgroundImage(#imageLiteral(resourceName: "SmallButton"), for: .normal)
+        button.setTitle("About the Author", for: .normal)
+        button.setTitleColor(UIColor(hexFromString: "#601E00"), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "Button-Normal"), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "Button-Highlighted"), for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont(name: "ArialRoundedMTBold", size: 20)
         button.addTarget(self, action: #selector(infoAction), for: .touchUpInside)
         return button
     }()
@@ -193,25 +196,12 @@ class HomeViewController: UIViewController {
         backGroundImageview.pinEdgesToSuperview()
         
         
-        // Add top labels
-        self.view.addSubview(topDescLabel)
-        topDescLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
-        topDescLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        topDescLabel.centerHorizontally(-40)
-        
-         self.view.addSubview(targetLabel)
-        targetLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        targetLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        targetLabel.leadingAnchor.constraint(equalTo: topDescLabel.trailingAnchor, constant: 5).isActive = true
-        targetLabel.centerYAnchor.constraint(equalTo: topDescLabel.centerYAnchor).isActive = true
-        
         // Add hitme button
         self.view.addSubview(hitMeButton)
         hitMeButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
         hitMeButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         hitMeButton.centerVertically()
         hitMeButton.centerHorizontally()
-        
         
         // Add slider and labels
         sliderStackView.addArrangedSubview(leftLabel)
@@ -223,16 +213,28 @@ class HomeViewController: UIViewController {
         sliderStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.7).isActive = true
         sliderStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         sliderStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-
+        
         slider.heightAnchor.constraint(equalToConstant: 50).isActive = true
         slider.widthAnchor.constraint(equalTo: sliderStackView.widthAnchor, multiplier: 0.85).isActive = true
-
+        
         leftLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         rightLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         rightLabel.widthAnchor.constraint(equalTo: sliderStackView.widthAnchor, multiplier: 0.10).isActive = true
         
+        // Add top labels
+        self.view.addSubview(topDescLabel)
+        topDescLabel.bottomAnchor.constraint(equalTo: self.sliderStackView.topAnchor, constant: -20).isActive = true
+        topDescLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        topDescLabel.centerHorizontally(-40)
         
-        // Add roudn label
+         self.view.addSubview(targetLabel)
+        targetLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        targetLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        targetLabel.leadingAnchor.constraint(equalTo: topDescLabel.trailingAnchor, constant: 5).isActive = true
+        targetLabel.centerYAnchor.constraint(equalTo: topDescLabel.centerYAnchor).isActive = true
+        
+        
+        // Add round label
         self.view.addSubview(roundLabel)
         roundLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
         roundLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -241,7 +243,7 @@ class HomeViewController: UIViewController {
         
         self.view.addSubview(roundValueLabel)
         
-        roundValueLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        roundValueLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         roundValueLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         roundValueLabel.leadingAnchor.constraint(equalTo: roundLabel.trailingAnchor).isActive = true
         roundValueLabel.centerYAnchor.constraint(equalTo: roundLabel.centerYAnchor).isActive = true
@@ -249,7 +251,7 @@ class HomeViewController: UIViewController {
         
         // Add score lable
         self.view.addSubview(scoreValueLabel)
-        scoreValueLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        scoreValueLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         scoreValueLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         scoreValueLabel.trailingAnchor.constraint(equalTo: hitMeButton.leadingAnchor).isActive = true
         scoreValueLabel.topAnchor.constraint(equalTo: hitMeButton.bottomAnchor, constant: 30).isActive = true
@@ -264,10 +266,11 @@ class HomeViewController: UIViewController {
 
         // Add info label
         self.view.addSubview(infoButton)
-        infoButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        infoButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        infoButton.leadingAnchor.constraint(equalTo: roundValueLabel.trailingAnchor, constant: 20).isActive = true
-        infoButton.centerYAnchor.constraint(equalTo: roundValueLabel.centerYAnchor).isActive = true
+        infoButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        infoButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        infoButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        infoButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10).isActive = true
+
         
         
         self.view.addSubview(reloadButton)
@@ -289,36 +292,59 @@ extension HomeViewController {
         targetValue = Int(targetLabel.text ?? "0") ?? 0
         score = 0
         round = 0
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-            let value = Float(self.targetValue)
-            self.slider.setValue(value, animated: true)
-        })
-        
+        setSlider(value: 50)
     }
     
     // MARK:  Hitme button action
     @objc func hitMeAction() {
         let difference = abs(targetValue - selectedValue)
-        let points = 100 - difference
+        var points = 100 - difference
+        var title = ""
         
-        switch difference {
-        case 0:
-            showSlert(message: "Perfect!") {
-                self.score += points
-                points += 100
+        if difference == 0 {
+            points += 100
+            title = "Perfect!"
+        } else {
+            title = "You almost had it!"
+            if difference == 1 {
+                points += 50
+            } else if difference < 10 {
+                title = "Pretty good!"
+            } else {
+                title = "Not even close..."
             }
-        case <5:
-            
-            showSlert(message: "Perfect!") {
-                self.score += points
-            }
-        default:
-            
         }
+        
+        let message = "You scored \(points) points"
+        showSlert(message: message, title: title) {
+            self.nextRound(points:points)
+        }
+        
+    }
+    
+    // MARK: next round
+    
+    private func nextRound(points:Int) {
+        hitMeButton.animate()
+        round += 1
+        score += points
+        targetValue = Int.random(in: 1...100)
+        setSlider(value: 50)
+        targetLabel.text = String(targetValue)
+    }
+    
+    private func setSlider(value:Float) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+            self.slider.setValue(value, animated: true)
+        })
     }
     
     // MARK:  info button action
     @objc func infoAction() {
+        
+        let modalViewcontroller = AboutViewController()
+        modalViewcontroller.modalTransitionStyle = .flipHorizontal
+        self.present(modalViewcontroller, animated: true, completion: nil)
         
     }
     
@@ -328,7 +354,7 @@ extension HomeViewController {
     }
     
     // MARK:  show alert
-    func showSlert(message:String, actionFunc: (()->())?) {
+    func showSlert(message:String, title:String, actionFunc: (()->())?) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
